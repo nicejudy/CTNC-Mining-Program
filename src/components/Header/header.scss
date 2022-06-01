@@ -1,0 +1,108 @@
+#root {
+  $coin-color: #E1A900;
+  $bg-color: #2c2a00;
+  $viewbase-bg-color: #222114;
+}
+
+.dapp-topbar {
+  width: 89%;
+  max-width: 1100px;
+  align-items: center;
+  margin: auto;
+  display: flex;
+  justify-content: space-evenly;
+
+  .dapp-topbar-slider-btn{
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #E1A900;
+    border-radius: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .dapp-topbar-logo-wrap {
+    display: flex;
+    justify-content: left;
+    font-family: Rubik;
+    font-style: normal;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 28px;
+    letter-spacing: 0.01em;
+    color: white;
+
+    span {
+      font-weight: 600;
+      color: #E1A900;
+    }
+  }
+
+  .dapp-topbar-menu-wrap {
+    display: none;
+    justify-content: space-evenly;
+    margin-right: 30px;
+
+    a {
+      text-decoration: none;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      letter-spacing: 0.01em;
+      color: white;
+    }
+  
+    .menu-item {
+      padding: 10px 10px;
+    }
+  }
+
+  .dapp-topbar-btns-wrap {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    // margin-left: auto;
+  }
+}
+
+.disclaimer {
+  cursor: pointer;
+
+  .modal-title {
+    h2 {
+      font-family: Inter;
+      font-style: normal;
+      letter-spacing: 0.01em;
+      color: #E1A900;
+      margin-top: 0px;
+    }
+  }
+
+  .modal-description {
+    p {
+      font-family: Inter;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      letter-spacing: 0.01em;
+      color: white;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+@media screen and (min-width: 1120px) {
+  .dapp-topbar{
+    .dapp-topbar-slider-btn {
+      display: none;
+    }
+    .dapp-topbar-menu-wrap {
+      display: flex;
+    }
+  }
+}

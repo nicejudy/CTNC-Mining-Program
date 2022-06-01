@@ -1,0 +1,117 @@
+.dapp-sidebar {
+  height: 100vh;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+
+  .drawer-logo-wrap {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Rubik;
+    font-style: normal;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 28px;
+    letter-spacing: 0.01em;
+    color: white;
+
+    span {
+      font-weight: 600;
+      color: #E1A900;
+    }
+  }
+
+  .drawer-menu-items{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: start;
+    padding-left: 30px;
+    margin-top: 30px;
+
+    p, a {
+      text-decoration: none;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 19px;
+      letter-spacing: 0.01em;
+      color: white;
+    }
+  
+    .menu-item {
+      padding: 10px 10px;
+    }
+  }
+
+
+  .social-row {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+    padding: 1.3rem;
+    margin-top: 3rem;
+
+    .footer-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      margin: 0 6px;
+
+      a {
+          display: flex;
+      }
+    }
+  }
+}
+
+.MuiDrawer-root{
+  .MuiPaper-root{
+    border-right: none;
+    
+    z-index: 7;
+
+    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+      background: #13171e;
+    }
+  
+    /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
+    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+      background: #13171e;
+    }
+  }
+}
+
+.disclaimer {
+  cursor: pointer;
+
+  .modal-title {
+    h3 {
+      font-family: Inter;
+      font-style: normal;
+      letter-spacing: 0.01em;
+      color: #E1A900;
+      margin-top: 0px;
+    }
+  }
+
+  .modal-description {
+    max-height: 90%;
+    overflow: auto;
+
+    p {
+      font-family: Inter;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      letter-spacing: 0.01em;
+      color: white;
+    }
+  }
+}
