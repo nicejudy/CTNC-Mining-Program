@@ -9,7 +9,10 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Skeleton } from "@material-ui/lab";
 import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./main.scss";
-import { getMainnetURI, getAddresses } from "src/constants";
+
+import ConnectButton from "src/components/Header/connect-button";
+
+import { getMainnetURI, Addresses } from "src/constants";
 import { useWeb3Context } from "src/hooks";
 import { IReduxState } from "src/store/slices/state.interface";
 import { IAppSlice, loadAppDetails } from "src/store/slices/app-slice";
@@ -17,6 +20,7 @@ import { IAccountSlice, loadAccountDetails } from "src/store/slices/account-slic
 import { IPendingTxn, isPendingTxn } from "src/store/slices/pending-txns-slice";
 import { onStake } from "src/store/slices/stake-slice";
 import { error } from "src/store/slices/messages-slice";
+import LogoIcon from "src/assets/icons/logo-small.png";
 import TreasuryIcon from "src/assets/icons/treasury.png";
 import ContractIcon from "src/assets/icons/lock.png";
 import ReferralIcon from "src/assets/icons/referral.png";
@@ -26,27 +30,16 @@ import { trim } from "src/helpers";
 import TelegramIcon from "src/assets/icons/telegram.svg";
 import TwitterIcon from "src/assets/icons/twitter.svg";
 import AuditIcon from "src/assets/icons/audit.svg";
+import DiscordIcon from "src/assets/icons/discord.svg";
 import BscscanIcon from "src/assets/icons/bscscan.svg";
 import ArrowIcon from "src/assets/icons/arrowup.png";
 import {ReactComponent as XIcon} from "src/assets/icons/x.svg";
 
-import BnbIcon from "src/assets/tokens/bnb.png";
-import AvaxIcon from "src/assets/tokens/avax.png";
-import CroIcon from "src/assets/tokens/cro.png";
-import FtmIcon from "src/assets/tokens/ftm.png";
-import MovrIcon from "src/assets/tokens/movr.png";
+import EthIcon from "src/assets/tokens/eth.png";
 import BusdIcon from "src/assets/tokens/busd.png";
 import CakeIcon from "src/assets/tokens/cake.png";
-import MimIcon from "src/assets/tokens/mim.png";
-import UstIcon from "src/assets/tokens/ust.png";
-import FusdtIcon from "src/assets/tokens/usdt.png";
-import BooIcon from "src/assets/tokens/boo.png";
-import SolarIcon from "src/assets/tokens/solar.png";
-import DaiIcon from "src/assets/tokens/dai.png";
-import DarkIcon from "src/assets/tokens/dark.png";
-import MmfIcon from "src/assets/tokens/mmf.png";
-import KronosIcon from "src/assets/icons/kronos.png";
-import KronosIcon1 from "src/assets/icons/kronos1.png";
+import CtncIcon from "src/assets/icons/logo-center-white.png";
+import CtncIcon1 from "src/assets/icons/only-logo-white.png";
 import AuditBadge from "src/assets/svg/audit.svg";
 import { getAddress } from "ethers/lib/utils";
 import { LaptopWindows } from "@material-ui/icons";
@@ -54,28 +47,24 @@ import { LaptopWindows } from "@material-ui/icons";
 function Main() {
     const isVerySmallScreen = useMediaQuery("(max-width: 500px)");
     const dispatch = useDispatch();
-    const { provider, address, providerChainID, checkWrongNetwork } = useWeb3Context();
+    const { provider, address, providerChainID } = useWeb3Context();
     
     const isAppLoading = useSelector<IReduxState, boolean>(state => state.app.loading);
     const app = useSelector<IReduxState, IAppSlice>(state => state.app);
     const account = useSelector<IReduxState, IAccountSlice>(state => state.account);
 
     const [stakeAmount, setStakeAmount] = useState("");
-    const [coinName, setCoinName] = useState("BNB");
-    const [chainName, setChainName] = useState("BSC");
+    const [coinName, setCoinName] = useState("ETH");
+    const [chainName, setChainName] = useState("Ethreum");
     const [claimTime, setClaimTime] = useState("--:--:--");
     const [compoundTime, setCompoundTime] = useState("--:--:--");
     const [coolDownTime, setCoolDownTime] = useState("--:--:--");
-    const [tokens, setTokens] = useState(["BNB", "BUSD", "CAKE", "KRONOS"]);
+    const [tokens, setTokens] = useState(["ETH", "CARAMEL"]);
     const [tokenId, setTokenId] = useState(0);
-    const [tokenIcons, setTokenIcons] = useState([BnbIcon, BusdIcon, CakeIcon]);
+    const [tokenIcons, setTokenIcons] = useState([EthIcon, BusdIcon, CakeIcon]);
 
     const [active1, setActive1] = useState("-active");
     const [active2, setActive2] = useState("");
-    const [active3, setActive3] = useState("");
-    const [active4, setActive4] = useState("");
-
-    const [grids, setGrids] = useState(4);
 
     const cookies = new Cookies();
     const [ref, setNum] = useQueryParam('ref', StringParam);
@@ -89,7 +78,7 @@ function Main() {
         if (tokenId == token) return;
         setTokenId(token);
         cookies.set("tokenId", token);
-        const staticProvider = new StaticJsonRpcProvider(getMainnetURI(providerChainID));
+        const staticProvider = new StaticJsonRpcProvider(getMainnetURI());
         await dispatch(loadAppDetails({ networkID: providerChainID, provider: staticProvider, token }));
         await dispatch(loadAccountDetails({ networkID: providerChainID, provider: staticProvider, account: address, token }));
     }
@@ -129,7 +118,7 @@ function Main() {
     }
 
     const Clipboard = () => {
-        navigator.clipboard.writeText(`https://wonderminer.app?ref=${account.address}`);
+        navigator.clipboard.writeText(`https://mine.cryptotigernode.club?ref=${account.address}`);
     }
 
     const [openFaq, setOpenFaq] = useState(false);
@@ -165,156 +154,62 @@ function Main() {
     });
 
     useEffect(() => {
-        const root = document.documentElement;
-
-        if (providerChainID == 56) {
-            root?.style.setProperty("--coin-color", "#E1A900");
-            root?.style.setProperty("--bg-color", "#2c2a0088");
-            root?.style.setProperty("--faq-bg-color", "#2c2a00cc");
-            root?.style.setProperty("--viewbase-bg-color", "#222114");
-            root?.style.setProperty("--btn-active-color", "#E1A900bb");
-            setChainName("BSC");
-            setTokens(["BNB", "BUSD", "CAKE", "KRONOS"]);
-            setTokenIcons([BnbIcon, BusdIcon, CakeIcon, KronosIcon1]);
-            setGrids(3);
-            setTokenId(0);
-        };
-        if (providerChainID == 43114) {
-            root?.style.setProperty("--coin-color", "#e13f3f");
-            root?.style.setProperty("--bg-color", "#240c0c88");
-            root?.style.setProperty("--faq-bg-color", "#240c0ccc");
-            root?.style.setProperty("--viewbase-bg-color", "#241818");
-            root?.style.setProperty("--btn-active-color", "#e13f3fbb");
-            setChainName("Avalanche");
-            setTokens(["AVAX", "MIM", "USDC.e", ""]);
-            setTokenIcons([AvaxIcon, MimIcon, "https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/logo.png"]);
-            setGrids(4);
-            setTokenId(0);
-        }
-        if (providerChainID == 250) {
-            root?.style.setProperty("--coin-color", "#0bafe5");
-            root?.style.setProperty("--bg-color", "#00222e88");
-            root?.style.setProperty("--faq-bg-color", "#00222ecc");
-            root?.style.setProperty("--viewbase-bg-color", "#131818");
-            root?.style.setProperty("--btn-active-color", "#0bafe5bb");
-            setChainName("Fantom");
-            setTokens(["FTM", "fUSDT", "BOO", ""]);
-            // setTokenIcons([FtmIcon, FusdtIcon, BooIcon]);
-            setTokenIcons([
-                FtmIcon,
-                FusdtIcon,
-                BooIcon
-            ]);
-            setGrids(4);
-            setTokenId(0);
-        }
-        if (providerChainID == 25) {
-            root?.style.setProperty("--coin-color", "#4e6ccf");
-            root?.style.setProperty("--bg-color", "#171a2588");
-            root?.style.setProperty("--faq-bg-color", "#171a25cc");
-            root?.style.setProperty("--viewbase-bg-color", "#10121a");
-            root?.style.setProperty("--btn-active-color", "#4e6ccfbb");
-            setChainName("Cronos");
-            setTokens(["CRO", "DARK", "MMF", ""]);
-            setTokenIcons([
-                CroIcon,
-                DarkIcon,
-                MmfIcon
-            ]);
-            setGrids(4);
-            setTokenId(0);
-        }
-        if (providerChainID == 1285) {
-            root?.style.setProperty("--coin-color", "#54cac6");
-            root?.style.setProperty("--bg-color", "#172e2d88");
-            root?.style.setProperty("--faq-bg-color", "#172e2dcc");
-            root?.style.setProperty("--viewbase-bg-color", "#1a2222");
-            root?.style.setProperty("--btn-active-color", "#54cac6bb");
-            setChainName("Moonriver");
-            setTokens(["MOVR", "DAI", "SOLAR", ""]);
-            setTokenIcons([MovrIcon, DaiIcon, SolarIcon]);
-            setGrids(4);
-            setTokenId(0);
-        }
-        onChangeToken(tokenId);
-    }, [providerChainID]);
-
-    useEffect(() => {
         setCoinName(tokens[tokenId]);
         if (tokenId == 0) {
             setActive1("-active");
             setActive2("");
-            setActive3("");
-            setActive4("");
         }
         if (tokenId == 1) {
             setActive1("");
             setActive2("-active");
-            setActive3("");
-            setActive4("");
-        }
-        if (tokenId == 2) {
-            setActive1("");
-            setActive2("");
-            setActive3("-active");
-            setActive4("");
-        }
-        if (tokenId == 3) {
-            setActive1("");
-            setActive2("");
-            setActive3("");
-            setActive4("-active");
         }
     }, [tokens, tokenId]);
 
-    const [explorer, setExplorer] = useState("https://bscscan.com/address/0xA3b67B202495ff851eD85bF64B9e96ADcf9e5fA7");
+    const [explorer, setExplorer] = useState("https://etherscan.io/address/0xA3b67B202495ff851eD85bF64B9e96ADcf9e5fA7");
 
     useEffect(() => {
-        const addresses = getAddresses(providerChainID);
         let contract = "";
         if (tokenId == 0) {
-            contract = addresses.WONDERMINER;
+            contract = Addresses.ETHMINER;
         }
         if (tokenId == 1) {
-            contract = addresses.ALTMINER1;
+            contract = Addresses.CMLMINER;
         }
-        if (tokenId == 2) {
-            contract = addresses.ALTMINER2;
-        }
-        if (tokenId == 3) {
-            contract = addresses.ALTMINER3;
-        }
-        setExplorer(`${addresses.EXPLORER}${contract}`);
-    }, [providerChainID, tokenId]);
+        setExplorer(`${Addresses.EXPLORER}${contract}`);
+    }, [tokenId]);
 
     return (
         <div className="main-view">
-            <div ref={refScrollUp}></div>
-            <div style={{height: "190px"}}></div>
-            <div className="main-select">
-                <div className={`main-select-btn${active1}`} onClick={() => onChangeToken(0)}>
-                    <p>{tokens[0]}</p>
-                    <img src={tokenIcons[0]} width="48" />
+            <div ref={refScrollUp} className="main-header">
+                <div className="main-header-logo">
+                    {!isVerySmallScreen && <img height="50" src={CtncIcon} />}
+                    {isVerySmallScreen && <img height="50" src={CtncIcon1} />}
+                    {/* <p className="main-header-logo-text">CTNC Miner</p> */}
                 </div>
-                <div className={`main-select-btn${active2}`} onClick={() => onChangeToken(1)}>
-                    <p>{tokens[1]}</p>
-                    <img src={tokenIcons[1]} width="48" />
-                </div>
-                <div className={`main-select-btn${active3}`} onClick={() => onChangeToken(2)}>
-                    <p>{tokens[2]}</p>
-                    <img src={tokenIcons[2]} width="48" />
-                </div>
-                {providerChainID == 56 && (
-                    <div className={`main-select-btn${active4}`} onClick={() => onChangeToken(3)}>
-                        <p>{tokens[3]}</p>
-                        <img src={tokenIcons[3]} width="48" />
+                <div className="main-select">
+                    <div className={`main-select-btn${active1}`} onClick={() => onChangeToken(0)}>
+                        <p>{tokens[0]}</p>
+                        <img src={tokenIcons[0]} width="40" />
                     </div>
-                )}
+                    <div className={`main-select-btn${active2}`} onClick={() => onChangeToken(1)}>
+                        <p>{tokens[1]}</p>
+                        <img src={tokenIcons[1]} width="40" />
+                    </div>
+                </div>
+                <div>
+                    <ConnectButton />
+                </div>
             </div>
+            {/* <div style={{height: "190px"}}></div> */}
             <div className="main-intro">
                 <div className="main-intro-header">
-                    <p className="main-intro-header-welcome">Welcome to</p>
-                    <p className="main-intro-header-name">The WonderMiner.</p>
+                    {!isVerySmallScreen && <p className="main-intro-header-welcome">Welcome to <span className="main-intro-header-name">CTNC Miner.</span></p>}
+                    {isVerySmallScreen && (
+                        <>
+                            <p className="main-intro-header-welcome">Welcome to</p>
+                            <p className="main-intro-header-name">CTNC Miner.</p>
+                        </>
+                    )}
                     <p className="main-intro-header-desc">A smart and sustainable way to grow your <span className="coin-name">{coinName}</span> on the {chainName}</p>
 
                 </div>
@@ -510,7 +405,7 @@ function Main() {
                     <div className="main-referral-body">
                         <OutlinedInput
                             className="referral-link"
-                            value={`https://wonderminer.app?ref=${account.address}`}
+                            value={`https://mine.cryptotigernode.club?ref=${account.address}`}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <div className="referral-link-btn" onClick={Clipboard}>
@@ -527,17 +422,17 @@ function Main() {
             </div>
             <div className="main-footer">
                 {!isVerySmallScreen && (
-                    <div className="main-footer-item" >
-                        <a href="https://farms.kronosdao.ai/farms" target="_blank">
-                            <img src={KronosIcon} alt="Kronos Dao" height="25" />
+                    <div className="main-footer-item ctnc-link" >
+                        <a href="https://cryptotigernode.club/" target="_blank">
+                            <img src={CtncIcon} alt="CTNC" height="40" />
                         </a>
                     </div>
                 )}
                 <div className="main-footer-wrap">
                     {isVerySmallScreen && (
-                        <div className="main-footer-item" >
-                            <a href="https://farms.kronosdao.ai/farms" target="_blank">
-                                <img src={KronosIcon1} alt="Kronos Dao" height="30" />
+                        <div className="main-footer-item">
+                            <a href="https://cryptotigernode.club/" target="_blank">
+                                <img src={CtncIcon1} alt="CTNC" height="25" />
                             </a>
                         </div>
                     )}
@@ -547,17 +442,17 @@ function Main() {
                         </a>
                     </div>
                     <div className="main-footer-item">
-                        <a href="https://www.coinscope.co/coin/15-bnb" target="_blank">
-                            <img src={AuditIcon} alt="Audit" />
+                        <a href="#" target="_blank">
+                            <img src={DiscordIcon} alt="Discord" />
                         </a>
                     </div>
                     <div className="main-footer-item">
-                        <a href="https://t.me/KRONOS_community" target="_blank">
+                        <a href="#" target="_blank">
                             <img src={TelegramIcon} alt="Telegram" />
                         </a>
                     </div>
                     <div className="main-footer-item">
-                        <a href="https://twitter.com/dao_kronos" target="_blank">
+                        <a href="#" target="_blank">
                             <img src={TwitterIcon} alt="Twitter" />
                         </a>
                     </div>
@@ -566,9 +461,9 @@ function Main() {
             <div className="main-scroll-btn" onClick={scrollToTop}>
                 <img src={ArrowIcon} alt="Arrow Up" />
             </div>
-            <div className="main-badge-btn" onClick={gotoAudit}>
+            {/* <div className="main-badge-btn" onClick={gotoAudit}>
                 <img src={AuditBadge} alt="Audit Badge" />
-            </div>
+            </div> */}
             <div className="main-faq-btn" onClick={handleOpenFaq}>
                 <p>?</p>
             </div>
@@ -585,12 +480,12 @@ function Main() {
                     <Box className="main-modal-body">
                         <div className="main-modal-row">
                             <p className="main-modal-row-header">FAQs</p>
-                            <p className="main-modal-row-title">1: What is the {coinName} WonderMiner?</p>
-                            <p className="main-modal-row-text">The {coinName} WonderMiner is a decentralized application built on the {chainName} Network. The object of the game is to hire more miners sooner and more often than other players. This in turn earns you more {coinName} faster. These Miners work for you tirelessly, giving you a daily average of 8% of your miners' value.</p>
+                            <p className="main-modal-row-title">1: What is the CTNC {coinName} Miner?</p>
+                            <p className="main-modal-row-text">The CTNC {coinName} Miner is a decentralized application built on the {chainName} Network. The object of the game is to hire more miners sooner and more often than other players. This in turn earns you more {coinName} faster. These Miners work for you tirelessly, giving you a daily average of 8% of your miners' value.</p>
                             <p className="main-modal-row-text">The daily percentage return depends on players' actions that are taken within the platform that impact the miners's efficiency rate. The mining efficiency rate rises and falls as users buy Miners, re-hire your earnings and sell your Eggs for {coinName}.</p>
                             <p className="main-modal-row-text">Once Miners are Bought, they cannot be sold, and the investment made to re-hire them (either through hire or re-hiring) cannot be taken back. However, once bought, Miners will not stop producing yield.</p>
                             <p className="main-modal-row-title">2: What makes it different from other similar platforms?</p>
-                            <p className="main-modal-row-text">The {coinName} WonderMiner has several anti-dumping and anti-whale measures in place to ensure the longevity of the project. These measures include maximum deposits, as well as a cutoff time AND a cooldown time for withdrawals.</p>
+                            <p className="main-modal-row-text">The CTNC {coinName} Miner has several anti-dumping and anti-whale measures in place to ensure the longevity of the project. These measures include maximum deposits, as well as a cutoff time AND a cooldown time for withdrawals.</p>
                             <p className="main-modal-row-text">The cutoff time is the amount of time it will take for your "cart" to be full of rewards. Once the bag is full, it will stop filling until you've taken some action in the game. This is to prevent whales from letting their rewards accumulate for a long time, and removes the false impression the contract value is going up when most of it is rewards the whale is waiting to withdraw at once.</p>
                             <p className="main-modal-row-text">The withdraw cooldown time is the amount of time one has to wait before they can make another withdrawal. This also prevents the contract balance from decreasing in value too fast. If the team decides it's necessary to protect the contract balance, this time period can be adjusted to slow down the rate of withdrawals, but it can only be set to a value less than or equal to 24 hours (per contract rules).</p>
                             <p className="main-modal-row-text">The compound count is the number of times the user has compounded. By default, the required compound count by the platform is 10, meaning the user will have to compound 10 times(compound once every 12 hours) before they can withdraw without the feedback tax of 80%. This feature in essense will ensure the longevity and stability of the project.</p>

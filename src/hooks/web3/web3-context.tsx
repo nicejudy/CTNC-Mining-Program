@@ -4,7 +4,6 @@ import { StaticJsonRpcProvider, JsonRpcProvider, Web3Provider } from "@etherspro
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { getMainnetURI } from "./helpers";
 import { DEFAULD_NETWORK } from "../../constants";
-import { Networks, isCorrectNetwork } from "../../constants";
 import { messages } from "../../constants/messages";
 import { useDispatch } from "react-redux";
 import { swithNetwork } from "../../helpers/switch-network";
@@ -53,7 +52,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     const [providerChainID, setProviderChainID] = useState(DEFAULD_NETWORK);
     const [address, setAddress] = useState("");
 
-    const [uri, setUri] = useState(getMainnetURI(chainID));
+    const [uri, setUri] = useState(getMainnetURI());
     const [provider, setProvider] = useState<JsonRpcProvider>(new StaticJsonRpcProvider(uri));
 
     const [web3Modal] = useState<Web3Modal>(
@@ -64,7 +63,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
                     package: WalletConnectProvider,
                     options: {
                         rpc: {
-                            [chainID]: getMainnetURI(chainID),
+                            [chainID]: getMainnetURI(),
                         },
                     },
                 },
@@ -113,7 +112,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
         setAddress(connectedAddress);
         setProviderChainID(chainId);
 
-        if (isCorrectNetwork(chainId)) {
+        if (chainId == DEFAULD_NETWORK) {
             setProvider(connectedProvider);
         }
     };
@@ -132,7 +131,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
         setProviderChainID(chainId);
 
-        if (isCorrectNetwork(chainId)) {
+        if (chainId == DEFAULD_NETWORK) {
             setProvider(connectedProvider);
         }
 
@@ -142,14 +141,14 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     }, [provider, web3Modal, connected]);
 
     const checkWrongNetwork = async (): Promise<boolean> => {
-        // if (providerChainID !== DEFAULD_NETWORK) {
-        //     const shouldSwitch = window.confirm(messages.switch_to_avalanche);
-        //     // if (shouldSwitch) {
-        //     //     // await swithNetwork();
-        //     //     window.location.reload();
-        //     // }
-        //     return true;
-        // }
+        if (providerChainID !== DEFAULD_NETWORK) {
+            const shouldSwitch = window.confirm(messages.switch_to_ethereum);
+            if (shouldSwitch) {
+                await swithNetwork("0x1");
+                // window.location.reload();
+            }
+            return true;
+        }
 
         return false;
     };

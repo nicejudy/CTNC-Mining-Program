@@ -1,5 +1,5 @@
 import { ethers, BigNumber } from "ethers";
-import { getAddresses } from "../../constants";
+import { Addresses } from "../../constants";
 import { WonderMinerAbi, erc20Abi, AltMinerAbi } from "../../abi";
 import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./pending-txns-slice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -34,22 +34,12 @@ export const onStake = createAsyncThunk(
 
     const signer = provider.getSigner();
 
-    const addresses = getAddresses(networkID);
-    let minerContract = new ethers.Contract(addresses.WONDERMINER, WonderMinerAbi, signer);
+    let minerContract = new ethers.Contract(Addresses.ETHMINER, WonderMinerAbi, signer);
     if (token == 1) {
-        minerContract = new ethers.Contract(addresses.ALTMINER1, AltMinerAbi, signer);
-    } else if (token == 2) {
-        minerContract = new ethers.Contract(addresses.ALTMINER2, AltMinerAbi, signer);
-    } else if (token == 3) {
-        minerContract = new ethers.Contract(addresses.ALTMINER3, AltMinerAbi, signer);
+        minerContract = new ethers.Contract(Addresses.CMLMINER, AltMinerAbi, signer);
     }
 
-    let tokenContract = new ethers.Contract(addresses.TOKEN1, erc20Abi, signer)
-    if (token == 2) {
-        tokenContract = new ethers.Contract(addresses.TOKEN2, erc20Abi, signer)
-    } else if (token == 3) {
-        tokenContract = new ethers.Contract(addresses.TOKEN3, erc20Abi, signer)
-    }
+    const tokenContract = new ethers.Contract(Addresses.CARAMEL, erc20Abi, signer)
 
     const cookies = new Cookies();
     let ref

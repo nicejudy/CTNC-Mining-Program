@@ -1,5 +1,5 @@
 import { BigNumber, ethers } from "ethers";
-import { getAddresses } from "../../constants";
+import { Addresses } from "../../constants";
 import { WonderMinerAbi, erc20Abi, AltMinerAbi } from "../../abi";
 import { setAll } from "../../helpers";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
@@ -17,28 +17,14 @@ export const loadAppDetails = createAsyncThunk(
     "app/loadAppDetails",
     //@ts-ignore
     async ({ networkID, provider, token }: ILoadAppDetails) => {
-
-        const addresses = getAddresses(networkID);
-        let minerContract = new ethers.Contract(addresses.WONDERMINER, WonderMinerAbi, provider);
+        let minerContract = new ethers.Contract(Addresses.ETHMINER, WonderMinerAbi, provider);
         if (token == 1) {
-            minerContract = new ethers.Contract(addresses.ALTMINER1, AltMinerAbi, provider);
-        } else if (token == 2) {
-            minerContract = new ethers.Contract(addresses.ALTMINER2, AltMinerAbi, provider);
-        } else if (token == 3) {
-            minerContract = new ethers.Contract(addresses.ALTMINER3, AltMinerAbi, provider);
+            minerContract = new ethers.Contract(Addresses.CMLMINER, AltMinerAbi, provider);
         }
 
-        let tokenContract = new ethers.Contract(addresses.TOKEN1, erc20Abi, provider)
-        if (token == 2) {
-            tokenContract = new ethers.Contract(addresses.TOKEN2, erc20Abi, provider)
-        } else if (token == 3) {
-            tokenContract = new ethers.Contract(addresses.TOKEN3, erc20Abi, provider)
-        }
+        const tokenContract = new ethers.Contract(Addresses.CARAMEL, erc20Abi, provider)
 
-        let tokenDecimal = 18;
-        if (token != 0) {
-            tokenDecimal = (await tokenContract.decimals()) * 1;
-        }
+        const tokenDecimal = 18;
 
         const siteData = await minerContract.getSiteInfo();
         
@@ -62,7 +48,7 @@ export const loadAppDetails = createAsyncThunk(
 
         let contractBalanceString;
         if (token == 0) {
-            contractBalanceString = (await provider.getBalance(addresses.WONDERMINER)).toString();
+            contractBalanceString = (await provider.getBalance(Addresses.ETHMINER)).toString();
         } else {
             contractBalanceString = (await minerContract.getBalance()).toString();
         }

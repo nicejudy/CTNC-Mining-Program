@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 
 function ViewBase({ children }: IViewBaseProps) {
     const classes = useStyles();
-    // const { provider, address, providerChainID, checkWrongNetwork } = useWeb3Context();
+    // const { provider, address, providerChainID } = useWeb3Context();
 
     const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -52,34 +52,12 @@ function ViewBase({ children }: IViewBaseProps) {
         setMobileOpen(!mobileOpen);
     };
 
-    // useEffect(() => {
-    //     const root = document.documentElement;
-
-    //     if (providerChainID == 56) {
-    //         root?.style.setProperty("--bg-color", "#2c2a00");
-    //     };
-    //     if (providerChainID == 43114) {
-    //         root?.style.setProperty("--bg-color", "#240c0c");
-    //     }
-    //     if (providerChainID == 250) {
-    //         root?.style.setProperty("--bg-color", "#00222e");
-    //     }
-    //     if (providerChainID == 25) {
-    //         root?.style.setProperty("--bg-color", "#171a25");
-    //     }
-    //     if (providerChainID == 1285) {
-    //         root?.style.setProperty("--bg-color", "#172e2d");
-    //     }
-    // }, [providerChainID]);
-
     return (
         <div className="view-base-root">
             <Messages />
-            <Header drawe={!isSmallerScreen} handleDrawerToggle={handleDrawerToggle} />
             <div className={`${classes.content} ${isSmallerScreen && classes.contentShift}`}>
                 {children}
             </div>
-            {/* <Footer /> */}
         </div>
     );
 }

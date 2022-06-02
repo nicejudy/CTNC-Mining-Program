@@ -4,7 +4,6 @@ import { useWeb3Context } from "../../hooks";
 import { makeStyles, rgbToHex } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ConnectButton from "./connect-button";
-import SwitchButton from "./switch-button";
 import MenuIcon from "../../assets/icons/hamburger.svg";
 import LogoIcon from "../../assets/icons/bnbpark-logo.png";
 import "./header.scss";
@@ -48,7 +47,7 @@ const useStyles = makeStyles(theme => ({
         }),
         backgroundColor: "rgba(0, 0, 0, 0.1)",
         backdropFilter: "blur(10px)",
-        position: "absolute",
+        position: "fixed",
         width: "100%",
         zIndex: 1,
     },
@@ -62,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Header({ handleDrawerToggle, drawe }: IHeader) {
-    const { provider, checkWrongNetwork, web3, chainID, providerChainID, connected, address } = useWeb3Context();
+    const { provider, web3, chainID, providerChainID, connected, address } = useWeb3Context();
     const [isConnected, setConnected] = useState(connected);
 
     const classes = useStyles();
@@ -86,9 +85,9 @@ function Header({ handleDrawerToggle, drawe }: IHeader) {
                     <div className="dapp-topbar-logo-wrap">
                         <img src={LogoIcon} width={150} />
                     </div>
-                    <div className="dapp-topbar-btns-wrap">
+                    {/* <div className="dapp-topbar-btns-wrap">
                         {isConnected && <SwitchButton />}
-                    </div>
+                    </div> */}
                     <div className="dapp-topbar-btns-wrap">
                         <ConnectButton />
                     </div>

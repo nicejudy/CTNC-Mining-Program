@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useWeb3Context } from "../../../hooks";
-import { DEFAULD_NETWORK, isCorrectNetwork } from "../../../constants";
+import { DEFAULD_NETWORK } from "../../../constants";
 import { IReduxState } from "../../../store/slices/state.interface";
 import { IPendingTxn } from "../../../store/slices/pending-txns-slice";
 import "./connect-menu.scss";
@@ -16,18 +16,18 @@ function ConnectMenu() {
     const dispatch = useDispatch();
     const [isConnected, setConnected] = useState(connected);
 
-    const isVerySmallScreen = useMediaQuery("(max-width: 500px)");
+    const isVerySmallScreen = useMediaQuery("(max-width: 600px)");
 
     let pendingTransactions = useSelector<IReduxState, IPendingTxn[]>(state => {
         return state.pendingTransactions;
     });
 
-    let buttonText = "Connect Wallet";
+    let buttonText = "CONNECT";
     let clickFunc: any = connect;
     let buttonStyle = {};
 
     if (isConnected) {
-        buttonText = "Disconnect";
+        buttonText = "DISCONNECT";
         clickFunc = disconnect;
     }
 
@@ -36,13 +36,13 @@ function ConnectMenu() {
         clickFunc = () => {};
     }
 
-    // if (isConnected && !isCorrectNetwork(providerChainID)) {
-    //     buttonText = "Wrong network";
-    //     buttonStyle = { backgroundColor: "rgb(255, 67, 67)" };
-    //     clickFunc = () => {
-    //         checkWrongNetwork();
-    //     };
-    // }
+    if (isConnected && providerChainID != DEFAULD_NETWORK) {
+        buttonText = "Wrong";
+        buttonStyle = { backgroundColor: "rgb(255, 67, 67)" };
+        clickFunc = () => {
+            checkWrongNetwork();
+        };
+    }
 
     useEffect(() => {
         setConnected(connected);
