@@ -48,7 +48,7 @@ export const onStake = createAsyncThunk(
         ref = cookies.get('ref')
       }
     } else {
-      ref = "0x0000000000000000000000000000000000000000"
+      ref = "0x79c9D554658350E747169F67267088487c7e4c8e"
     }
 
     let stakeTx;
