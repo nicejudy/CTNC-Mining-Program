@@ -122,7 +122,7 @@ function Main() {
     }
 
     const Clipboard = () => {
-        navigator.clipboard.writeText(`https://mine.cryptotigernode.club?ref=${account.address}`);
+        navigator.clipboard.writeText(`https://mine.cryptotigernode.club/?ref=${account.address}`);
     }
 
     const [openFaq, setOpenFaq] = useState(false);
@@ -409,7 +409,7 @@ function Main() {
                     <div className="main-referral-body">
                         <OutlinedInput
                             className="referral-link"
-                            value={`https://mine.cryptotigernode.club?ref=${account.address}`}
+                            value={`https://mine.cryptotigernode.club/?ref=${account.address}`}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <div className="referral-link-btn" onClick={Clipboard}>
