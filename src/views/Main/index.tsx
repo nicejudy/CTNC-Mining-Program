@@ -36,7 +36,7 @@ import ArrowIcon from "src/assets/icons/arrowup.png";
 import {ReactComponent as XIcon} from "src/assets/icons/x.svg";
 
 import EthIcon from "src/assets/tokens/eth.png";
-import BusdIcon from "src/assets/tokens/busd.png";
+import CmlIcon from "src/assets/tokens/caramel.png";
 import CakeIcon from "src/assets/tokens/cake.png";
 import CtncIcon from "src/assets/icons/logo-center-white.png";
 import CtncIcon1 from "src/assets/icons/only-logo-white.png";
@@ -61,7 +61,7 @@ function Main() {
     const [coolDownTime, setCoolDownTime] = useState("--:--:--");
     const [tokens, setTokens] = useState(["ETH", "CARAMEL"]);
     const [tokenId, setTokenId] = useState(0);
-    const [tokenIcons, setTokenIcons] = useState([EthIcon, BusdIcon, CakeIcon]);
+    const [tokenIcons, setTokenIcons] = useState([EthIcon, CmlIcon]);
 
     const [active1, setActive1] = useState("-active");
     const [active2, setActive2] = useState("");
