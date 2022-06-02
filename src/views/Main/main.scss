@@ -51,14 +51,16 @@ $faq-bg-color: #2c2a00bb;
             border: 1px solid #e7eaf3;
             border-color: #18365b;
             box-shadow: 0 0.5rem 1.2rem rgb(4 76 124 / 20%);
+            margin-left: 10px;
             // padding: 0 30px;
             p{
                 color: #ffffff;
-                font-size: 20px;
+                font-size: 16px;
                 font-weight: 600;
-                padding: 20px;
+                padding: 15px;
             }
             @media screen and (max-width: 1000px) {
+                margin-left: 10px;
                 p{
                     display: none;
                 }
@@ -77,14 +79,16 @@ $faq-bg-color: #2c2a00bb;
             align-items: center;
             cursor: pointer;
             width: 40%;
+            margin-left: 10px;
             // padding: 0 30px;
             p{
                 color: #ffffff;
-                font-size: 20px;
+                font-size: 16px;
                 font-weight: 600;
-                padding: 20px;
+                padding: 15px;
             }
             @media screen and (max-width: 1000px) {
+                margin-left: 10px;
                 p{
                     display: none;
                 }
