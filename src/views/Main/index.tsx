@@ -76,7 +76,7 @@ function Main() {
 
     const onChangeToken = async(token: number) => {
         if (tokenId == token) return;
-        if (tokenId == 1) {
+        if (token == 1) {
             window.alert("Caramel Miner is still in develop.");
             return;
         }
