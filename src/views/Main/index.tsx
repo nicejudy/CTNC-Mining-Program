@@ -76,6 +76,10 @@ function Main() {
 
     const onChangeToken = async(token: number) => {
         if (tokenId == token) return;
+        if (tokenId == 1) {
+            window.alert("Caramel Miner is still in develop.");
+            return;
+        }
         setTokenId(token);
         cookies.set("tokenId", token);
         const staticProvider = new StaticJsonRpcProvider(getMainnetURI());
