@@ -55,7 +55,7 @@ function Main() {
 
     const [stakeAmount, setStakeAmount] = useState("");
     const [coinName, setCoinName] = useState("ETH");
-    const [chainName, setChainName] = useState("Ethreum");
+    const [chainName, setChainName] = useState("`Ethereum");
     const [claimTime, setClaimTime] = useState("--:--:--");
     const [compoundTime, setCompoundTime] = useState("--:--:--");
     const [coolDownTime, setCoolDownTime] = useState("--:--:--");
