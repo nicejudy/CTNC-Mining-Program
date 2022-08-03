@@ -1,8 +1,8 @@
 {
-  "short_name": "WonderMiner",
+  "short_name": "CTNC Miner Machine",
   "start_url": ".",
   "homepage": "./",
-  "name": "WonerMiner",
+  "name": "CTNC Miner Machine",
   "launch_path": "/public/index.html",
   "icons": [
     {
